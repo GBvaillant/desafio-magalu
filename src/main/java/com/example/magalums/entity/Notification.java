@@ -1,6 +1,7 @@
 package com.example.magalums.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +12,6 @@ import java.time.LocalDateTime;
 @Table(name = "notification")
 @Getter
 @Setter
-@NoArgsConstructor
 public class Notification {
 
     @Id
@@ -19,6 +19,8 @@ public class Notification {
     private Long id;
 
     private LocalDateTime date;
+
+    private LocalDateTime dateTime;
 
     private String message;
 
@@ -31,4 +33,12 @@ public class Notification {
     @ManyToOne
     @JoinColumn(name = "status_id")
     private Status status;
+
+    public Notification(LocalDateTime dateTime, String destination, String message, Channel channel, Status status) {
+        this.dateTime = dateTime;
+        this.destination = destination;
+        this.message = message;
+        this.channel = channel;
+        this.status = status;
+    }
 }

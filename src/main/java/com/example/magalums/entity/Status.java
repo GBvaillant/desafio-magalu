@@ -12,8 +12,6 @@ import lombok.Setter;
 @Table(name = "status")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Status {
 
     @Id
@@ -21,7 +19,14 @@ public class Status {
 
     private String description;
 
-    @AllArgsConstructor
+    public Status(Long status_id, String description) {
+        this.status_id = status_id;
+        this.description = description;
+    }
+
+    public Status() {
+    }
+
     public enum Values {
         PENDING(1L, "Pending"),
         SUCCESS(2L, "Success"),
@@ -30,6 +35,11 @@ public class Status {
 
         private Long id;
         private String description;
+
+        Values(Long id, String description) {
+            this.id = id;
+            this.description = description;
+        }
 
         public Status toStatus() {
             return new Status(id, description);

@@ -9,11 +9,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "chanel")
+@Table(name = "channel")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 public class Channel {
 
     @Id
@@ -21,8 +19,14 @@ public class Channel {
 
     private String description;
 
-    @AllArgsConstructor
-    @NoArgsConstructor
+    public Channel(Long channel_id, String description) {
+        this.channel_id = channel_id;
+        this.description = description;
+    }
+
+    public Channel() {
+    }
+
     public enum Values {
         EMAIL(1L, "Email"),
         SMS(2L, "SMS"),
@@ -30,6 +34,11 @@ public class Channel {
 
         private Long id;
         private String description;
+
+        Values(Long id, String description) {
+            this.id = id;
+            this.description = description;
+        }
 
         public Channel toChannel() {
             return new Channel(id, description);

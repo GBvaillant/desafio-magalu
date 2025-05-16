@@ -5,9 +5,9 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: magaludb
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: senha123
+      MYSQL_USER: magalu
+      MYSQL_PASSWORD: senha123
     ports:
       - "3306:3306"
     volumes:
