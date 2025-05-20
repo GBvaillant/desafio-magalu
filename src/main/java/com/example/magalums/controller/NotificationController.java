@@ -1,9 +1,9 @@
 package com.example.magalums.controller;
 
+import com.example.magalums.dto.NotificationResponseDto;
 import com.example.magalums.dto.SchaduleNotificationDto;
 import com.example.magalums.entity.Notification;
 import com.example.magalums.service.NotificationService;
-import jakarta.websocket.server.PathParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,13 +27,20 @@ public class NotificationController {
         return ResponseEntity.accepted().build();
     }
 
-    @GetMapping("/{notificationId}")
-    public ResponseEntity<Notification> getNotification(@PathVariable("notificationId") Long notificationId) {
-        Optional<Notification> notification = notificationService.getNotificationById(notificationId);
+    @GetMapping("/{id}")
+    public ResponseEntity<NotificationResponseDto> getNotification(@PathVariable("id") Long id) {
+        Optional<Notification> notification = notificationService.getNotificationById(id);
 
         if (notification.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(notification.get());
+        System.out.println("Notification found: " + notification);
+        return ResponseEntity.ok(NotificationResponseDto.fromEntity(notification.get()));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> cancelNotification(@PathVariable("id") Long id) {
+      notificationService.cancelNotification(id);
+      return ResponseEntity.noContent().build();
+}
 }

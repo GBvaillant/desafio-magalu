@@ -3,15 +3,9 @@ package com.example.magalums.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "status")
-@Getter
-@Setter
 public class Status {
 
     @Id
@@ -44,5 +38,21 @@ public class Status {
         public Status toStatus() {
             return new Status(id, description);
         }
+    }
+
+    public Long getStatus_id() {
+        return status_id;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setStatus_id(Long status_id) {
+        this.status_id = status_id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

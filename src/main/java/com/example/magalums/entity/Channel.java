@@ -3,15 +3,9 @@ package com.example.magalums.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "channel")
-@Getter
-@Setter
 public class Channel {
 
     @Id
@@ -43,5 +37,21 @@ public class Channel {
         public Channel toChannel() {
             return new Channel(id, description);
         }
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public Long getChannel_id() {
+        return channel_id;
+    }
+
+    public void setChannel_id(Long channel_id) {
+        this.channel_id = channel_id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
