@@ -18,16 +18,17 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDateTime date;
-
     private LocalDateTime dateTime;
-
-    private String message;
 
     private String destination;
 
+    private String message;
+
+    public Notification() {
+    }
+
     @ManyToOne
-    @JoinColumn(name = "chanel_id")
+    @JoinColumn(name = "channel_id")
     private Channel channel;
 
     @ManyToOne
