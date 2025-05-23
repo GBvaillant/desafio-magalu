@@ -14,8 +14,8 @@ public record SchaduleNotificationDto(LocalDateTime dateTime,
   public Notification toNotification() {
     return new Notification(
             dateTime,
-            message,
             destination,
+            message,
             channel.toChannel(),
             Status.Values.PENDING.toStatus());
   }
