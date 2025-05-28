@@ -6,9 +6,13 @@ import com.example.magalums.entity.Status;
 import com.example.magalums.repository.NotificationRepository;
 import com.example.magalums.scheduler.MagaluTaskScheduler;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.sqs.SqsClient;
 import software.amazon.awssdk.services.sqs.model.SendMessageRequest;
@@ -25,17 +29,20 @@ public class NotificationService {
     private final SqsClient sqsClient;
     private final String queueUrl;
     private final ObjectMapper objectMapper;
+    private final JavaMailSender javaMailSender;
 
     private static final Logger logger = LoggerFactory.getLogger(MagaluTaskScheduler.class);
 
     public NotificationService(NotificationRepository notificationRepository,
                                SqsClient sqsClient,
                                ObjectMapper objectMapper,
-                               @Value("${aws.sqs.queue.url}") String queueUrl) {
+                               @Value("${aws.sqs.queue.url}") String queueUrl,
+                               JavaMailSender javaMailSender) {
         this.notificationRepository = notificationRepository;
         this.sqsClient = sqsClient;
         this.objectMapper = objectMapper;
         this.queueUrl = queueUrl;
+        this.javaMailSender = javaMailSender;
     }
 
     public void scheduleNotification(SchaduleNotificationDto dto) {
@@ -95,5 +102,18 @@ public class NotificationService {
 
             notificationRepository.save(n);
         };
+    }
+
+    public void sendEmail (String to, String subject, String content) {
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(content, false);
+            javaMailSender.send(message);
+        } catch (MessagingException e) {
+            throw new RuntimeException( "Erro ao enviar email: ",e);
+        }
     }
 }
