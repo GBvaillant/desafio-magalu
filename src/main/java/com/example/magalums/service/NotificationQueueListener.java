@@ -5,21 +5,28 @@ import com.example.magalums.entity.Notification;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.awspring.cloud.sqs.annotation.SqsListener;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-@Service
+@Component
 public class NotificationQueueListener {
 
     private final NotificationService notificationService;
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
-    public NotificationQueueListener(NotificationService notificationService) {
+    public NotificationQueueListener(NotificationService notificationService,
+                                     ObjectMapper objectMapper) {
         this.notificationService = notificationService;
+        this.objectMapper = new ObjectMapper()
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATE_KEYS_AS_TIMESTAMPS);
     }
 
-    @SqsListener(value = "${aws.sqs.queue.url}")
+    @SqsListener("magalums")
     public void listen(String messageContent) {
         try {
             Notification notification = objectMapper.readValue(messageContent, Notification.class);
