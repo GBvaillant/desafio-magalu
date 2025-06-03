@@ -66,7 +66,7 @@ public class NotificationService {
 
     public void checkAndSend(LocalDateTime dateTime) {
         var notifications =  notificationRepository.findByStatusInAndDateTimeBefore(List.of(
-                        Status.Values.PENDING.toStatus(),
+                        Status.Values.SUCCESS.toStatus(),
                         Status.Values.ERROR.toStatus()),
                 dateTime);
 
